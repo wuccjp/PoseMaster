@@ -42,7 +42,7 @@ function draw() {
         // 在鏡射狀態下畫字會變反，所以這裡暫時不畫編號
       }
     }
-    drawSkeleton(pose);
+    
   }
   pop(); 
   // --- 鏡射結束 ---
@@ -72,18 +72,6 @@ function drawKeypointLabels(pose) {
   }
 }
 
-function drawSkeleton(pose) {
-  let connections = bodyPose.getSkeleton();
-  stroke(0, 255, 0, 150);
-  strokeWeight(2);
-  for (let i = 0; i < connections.length; i++) {
-    let ptA = connections[i][0];
-    let ptB = connections[i][1];
-    if (ptA.confidence > 0.1 && ptB.confidence > 0.1) {
-      line(ptA.x, ptA.y, ptB.x, ptB.y);
-    }
-  }
-}
 
 function gotPoses(results) {
   poses = results;
