@@ -1,0 +1,90 @@
+//關鍵點編號顯示程式
+let video;
+let bodyPose;
+let poses = [];
+
+function preload() {
+  // 不要在這裡翻轉，我們手動翻轉畫布
+  bodyPose = ml5.bodyPose("MoveNet");
+}
+
+function setup() {
+  createCanvas(640, 480);
+  video = createCapture(VIDEO);
+  video.size(640, 480);
+  video.hide();
+  bodyPose.detectStart(video, gotPoses);
+}
+
+function draw() {
+  background(0);
+
+  // --- 鏡射處理區塊 ---
+  push(); 
+  translate(width, 0);
+  scale(-1, 1); // 水平翻轉整個畫布
+  
+  // 畫影像
+  image(video, 0, 0, width, height);
+
+  // 畫點位與骨架
+  if (poses.length > 0) {
+    let pose = poses[0];
+    
+    // 畫出所有綠色點
+    for (let i = 0; i < pose.keypoints.length; i++) {
+      let kp = pose.keypoints[i];
+      if (kp.confidence > 0.1) {
+        fill(0, 255, 0);
+        noStroke();
+        circle(kp.x, kp.y, 10);
+        
+        // 在鏡射狀態下畫字會變反，所以這裡暫時不畫編號
+      }
+    }
+    drawSkeleton(pose);
+  }
+  pop(); 
+  // --- 鏡射結束 ---
+
+  // --- 文字顯示區塊 (放在 pop 之後，字才是正的) ---
+  if (poses.length > 0) {
+    fill(255, 255, 0);
+    textSize(24);
+    textAlign(LEFT);
+    text("AI 偵測中...", 20, 40);
+    
+    // 如果想在正向畫面標示編號，需要手動計算鏡射座標
+    drawKeypointLabels(poses[0]);
+  }
+}
+
+// 專門用來畫「正向文字」的函式
+function drawKeypointLabels(pose) {
+  for (let i = 0; i < pose.keypoints.length; i++) {
+    let kp = pose.keypoints[i];
+    if (kp.confidence > 0.1) {
+      fill(255);
+      textSize(14);
+      // 關鍵邏輯：因為畫布翻轉了，文字座標要手動鏡射回來
+      text(i, width - kp.x + 10, kp.y - 10);
+    }
+  }
+}
+
+function drawSkeleton(pose) {
+  let connections = bodyPose.getSkeleton();
+  stroke(0, 255, 0, 150);
+  strokeWeight(2);
+  for (let i = 0; i < connections.length; i++) {
+    let ptA = connections[i][0];
+    let ptB = connections[i][1];
+    if (ptA.confidence > 0.1 && ptB.confidence > 0.1) {
+      line(ptA.x, ptA.y, ptB.x, ptB.y);
+    }
+  }
+}
+
+function gotPoses(results) {
+  poses = results;
+}
