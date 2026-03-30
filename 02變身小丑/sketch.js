@@ -1,3 +1,5 @@
+//要變身紅鼻子小丑，我們只需要抓取 AI 偵測到的 「鼻子 (Nose)」 座標（編號 0），
+//並在該位置畫一個紅色的圓球即可。
 let video;
 let bodyPose;
 let poses = [];
