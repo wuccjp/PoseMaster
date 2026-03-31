@@ -9,7 +9,21 @@
   + 2: 右眼 (Right Eye)
   + 3: 左耳 (Left Ear)
   + 4: 右耳 (Right Ear)
-  ### 環境建置：p5.js Web Editor 與 ml5.js 1.0 引入。 
+#### 上半身 (5 - 10) —— 適合製作拳擊、舉手計數
++ 5: 左肩 (Left Shoulder)
++ 6: 右肩 (Right Shoulder)
++ 7: 左肘 (Left Elbow)
++ 8: 右肘 (Right Elbow)
++ 9: 左手腕 (Left Wrist) —— 舉手計數、擊打目標的核心點。
++ 10: 右手腕 (Right Wrist)
+#### 下半身 (11 - 16) —— 適合製作深蹲、踢球、開合跳
++ 11: 左髖 (Left Hip) (臀部附近)
++ 12: 右髖 (Right Hip)
++ 13: 左膝 (Left Knee)
++ 14: 右膝 (Right Knee)
++ 15: 左腳踝 (Left Ankle)
++ 16: 右腳踝 (Right Ankle)
+### 環境建置：p5.js Web Editor 與 ml5.js 1.0 引入。 
 ### 實作專案：00 關鍵點編號顯示程式。  
 + AI 如何看人： 快速介紹 MoveNet 17 個點位的座標系統。
 + 鏡像修正邏輯： 為什麼我們需要水平翻轉？(解決「左右相反」問題)。
